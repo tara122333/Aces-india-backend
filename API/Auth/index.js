@@ -130,7 +130,7 @@ Access     ==> public
 
 Router.get(
     "/github/callback",
-    passport.authenticate("github", { failureRedirect: "https://xerocodeeassignment.onrender.com/" }),
+    passport.authenticate("github", { failureRedirect: "/" }),
     (req, res) => {
         return res.redirect(
             `https://xerocodeeassignment.onrender.com/options/repositories`
