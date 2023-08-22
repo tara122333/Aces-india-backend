@@ -1,7 +1,7 @@
 // Library
 import express from 'express';
 import { OptionsModel, UserModel } from '../../database/AllModels';
-
+import axios from 'axios';
 
 const Router = express.Router();
 
@@ -28,8 +28,8 @@ Router.post("/selected/:_id", async (req, res) => {
                 const selectedOptions = await OptionsModel.create({
                     user: _id,
                     option: option,
-                    hosting :  hosting,
-                    hostingOptions : hostingOptions
+                    hosting: hosting,
+                    hostingOptions: hostingOptions
                 });
                 if (selectedOptions) {
                     return res.status(200).json({ message: "success", selectedOptions });
@@ -45,5 +45,27 @@ Router.post("/selected/:_id", async (req, res) => {
     }
 });
 
+
+function ensureAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/');
+}
+
+Router.get('/repositories', ensureAuthenticated, async(req, res) => {
+    console.log("token");
+    console.log(req.session.passport.user.accessToken);
+    try {
+        const response = await axios.get('https://api.github.com/user/repos', { headers: { Authorization: `Bearer ${req.session.passport.user.accessToken}` } });
+        const repositories = response.data;
+            console.log("repositories");
+            console.log(repositories);
+            res.status(200).json({repositories});
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+        
+    }
+});
 
 export default Router;
