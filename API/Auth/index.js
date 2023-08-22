@@ -132,9 +132,6 @@ Router.get(
     "/github/callback",
     passport.authenticate("github", { failureRedirect: "/" }),
     (req, res) => {
-        console.log("req.session.passport.user");
-        console.log(req.session.passport.user);
-        // Successful authentication, redirect home.
         return res.redirect(
             `http://localhost:4000/options/repositories`
         );
