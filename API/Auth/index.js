@@ -110,7 +110,7 @@ Router.get(
         // console.log("req.session.passport");
         // console.log(req.session.passport);
         return res.redirect(
-            `https://xerocodeeassignment.onrender.com/google/${req.session.passport.user.user._id}`
+            `https://delightful-mermaid-12b15b.netlify.app/google/${req.session.passport.user.user._id}`
         );
     }
 );
@@ -146,7 +146,7 @@ Router.get(
     passport.authenticate("github", { failureRedirect: "/" }),
     (req, res) => {
         return res.redirect(
-            `https://xerocodeeassignment.onrender.com/github/${req.session.passport.user.user._id}`
+            `https://delightful-mermaid-12b15b.netlify.app/github/${req.session.passport.user.user._id}`
         );
     }
 );
