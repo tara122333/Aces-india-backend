@@ -54,13 +54,6 @@ UserSchema.statics.findByEmail = async (email) => {
   };
   
 
-//   Check email in db exist or not
-// UserSchema.statics.userShouldNotExist = async (email)=>{
-//     const user = UserModel.findOne({email});
-//     if(user) throw new Error("Email already exist");
-//     return user;
-// };
-
 
 //  find email and password in db
 UserSchema.statics.findByEmailAndPassword = async ({email,password})=>{

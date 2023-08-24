@@ -13,15 +13,11 @@ export default (passport) => {
             callbackURL: `https://xerocodeeassignment.onrender.com/auth/github/callback`
         },
             async (accessToken, refreshToken, profile, done) => {
-                // console.log("accessToken");
-                console.log(profile);
-                // localStorage.setItem("githubAccessToken", accessToken);
                 const newUser = {
                     fullname: profile.displayName ? profile.displayName : profile.username,
                     email: profile.username,
                     profilePic: profile.photos[0].value,
                     verified: true,
-                    // phoneNumber : profile.ph
                 };
                 try {
                     const user = await UserModel.findOne({ email: newUser.email });

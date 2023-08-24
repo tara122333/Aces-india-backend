@@ -5,19 +5,10 @@ import axios from 'axios';
 
 const Router = express.Router();
 
-
-/*
-route      ==> /signup
-method     ==> POST
-Des        ==> signUp with email and password
-params     ==> none
-Access     ==> public
-*/
 Router.post("/selected/:_id", async (req, res) => {
     try {
         const { _id } = req.params;
         const { option, hosting, hostingOptions, intro, steps } = req.body;
-        console.log(option);
         const userData = await UserModel.findOne({ _id });
         if (userData) {
             const selectedOptionsData = await OptionsModel.findOne({ user: _id });
@@ -46,6 +37,7 @@ Router.post("/selected/:_id", async (req, res) => {
         return res.status(500).json({ error: error.message });
     }
 });
+
 
 Router.get("/selected/data/:_id", async (req, res) => {
     try {
@@ -80,6 +72,7 @@ Router.get('/repositories', ensureAuthenticated, async (req, res) => {
 
     }
 });
+
 
 Router.get('/:_id', async (req, res) => {
     const { _id } = req.params;

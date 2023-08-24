@@ -9,20 +9,14 @@ const Router = express.Router();
 
 Router.post("/signup", async (req, res) => {
     try {
-        // await ValidSignup(req.body.credentials);
-        console.log(req.body.credentials);
         const findByEmail = await UserModel.findOne({ email: req.body.credentials.email });
         if (!findByEmail) {
             const newUser = await UserModel.create(req.body.credentials);
-            console.log(newUser);
             const token = newUser.generateAuthToken();
             return res.status(200).json({
                 token, message: "user added successfully", status: "success"
             });
         }
-        // const newUser = await UserModel.create(req.body.credentials);
-        // console.log(newUser);
-        // const token = newUser.generateAuthToken();
         return res.status(200).json({
             token, message: "user already added", status: "success"
         });
@@ -32,18 +26,8 @@ Router.post("/signup", async (req, res) => {
 });
 
 
-
-
-/*
-route      ==> /signin
-method     ==> POST
-Des        ==> signUp with email and password
-params     ==> none
-Access     ==> public
-*/
 Router.post("/signin", async (req, res) => {
     try {
-        // await ValidSignin(req.body.credentials);
         const user = await UserModel.findByEmailAndPassword(req.body.credentials);
         const token = user.generateAuthToken();
         return res.json({
@@ -56,17 +40,6 @@ Router.post("/signin", async (req, res) => {
 });
 
 
-
-
-
-
-/* 
-route      ==> /google
-method     ==> GET
-Des        ==> Google signin
-params     ==> none
-Access     ==> public
-*/
 Router.get("/google",
     passport.authenticate("google", {
         scope: [
@@ -75,18 +48,7 @@ Router.get("/google",
             "https://www.googleapis.com/auth/user.phonenumbers.read"
         ],
     }
-    ));
-
-
-/*
-route      ==> /google/callback
-method     ==> GET
-Des        ==> Google signin callback
-params     ==> none
-Access     ==> public
-
-
-*/
+));
 
 
 Router.get(
@@ -100,30 +62,12 @@ Router.get(
 );
 
 
-
-/* 
-route      ==> /github
-method     ==> GET
-Des        ==> github signin
-params     ==> none
-Access     ==> public
-*/
 Router.get("/github",
     passport.authenticate("github", {
         scope: ['']
     }
-    ));
+));
 
-
-/*
-route      ==> /github/callback
-method     ==> GET
-Des        ==> github signin callback
-params     ==> none
-Access     ==> public
-
-
-*/
 
 Router.get(
     "/github/callback",
@@ -142,7 +86,7 @@ Router.get("/github/repo",
     ));
 
 Router.get(
-    "/github/callback/repo",
+    "/github/repo",
     passport.authenticate("github", { failureRedirect: "/" }),
     (req, res) => {
         return res.redirect(
