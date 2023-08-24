@@ -17,6 +17,10 @@ const App = express();
 
 import googleAuthConfig from "./config/google.config"; 
 import githubAuthConfig from './config/github.config';
+import routeConfig from "./config/route.config";
+import githubrepoConfig from "./config/githubrepo.config";
+
+
 
 App.use(session({
     resave: false,
@@ -35,12 +39,17 @@ App.use(passport.session());
 
 googleAuthConfig(passport);
 githubAuthConfig(passport);
+githubrepoConfig(passport);
+routeConfig(passport);
+
 
 // importing microservices route
 import Auth from './API/Auth';
 import Options from './API/user';
+import UsersData from './API/UserData';
 
 
+App.use('/', UsersData);
 App.use('/auth', Auth);
 App.use('/options', Options);
 

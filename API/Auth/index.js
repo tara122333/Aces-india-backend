@@ -22,11 +22,22 @@ Access     ==> public
 Router.post("/signup", async (req, res) => {
     try {
         // await ValidSignup(req.body.credentials);
-        await UserModel.findByEmailAndPhone(req.body.credentials);
-        const newUser = await UserModel.create(req.body.credentials);
-        const token = newUser.generateAuthToken();
+        console.log(req.body.credentials);
+        // await UserModel.findByEmail(req.body.credentials);
+        const findByEmail = await UserModel.findOne({ email: req.body.credentials.email });
+        if (!findByEmail) {
+            const newUser = await UserModel.create(req.body.credentials);
+            console.log(newUser);
+            const token = newUser.generateAuthToken();
+            return res.status(200).json({
+                token, message: "user added successfully", status: "success"
+            });
+        }
+        // const newUser = await UserModel.create(req.body.credentials);
+        // console.log(newUser);
+        // const token = newUser.generateAuthToken();
         return res.status(200).json({
-            token, message: "user added successfully", status: "success"
+            token, message: "user already added", status: "success"
         });
     } catch (error) {
         return res.status(500).json({ error: error.message });
@@ -96,8 +107,10 @@ Router.get(
     passport.authenticate("google", { failureRedirect: "/" }),
     (req, res) => {
         // Successful authentication, redirect home.
+        // console.log("req.session.passport");
+        // console.log(req.session.passport);
         return res.redirect(
-            `http://localhost:3000/google/${req.session.passport.user.token}`
+            `http://localhost:3000/google/${req.session.passport.user.user._id}`
         );
     }
 );
@@ -133,7 +146,23 @@ Router.get(
     passport.authenticate("github", { failureRedirect: "/" }),
     (req, res) => {
         return res.redirect(
-            `https://xerocodeeassignment.onrender.com/options/repositories`
+            `https://xerocodeeassignment.onrender.com/${req.session.passport.user.user._id}`
+        );
+    }
+);
+
+Router.get("/github/repo",
+    passport.authenticate("github", {
+        scope: ['']
+    }
+    ));
+
+Router.get(
+    "/github/callback/repo",
+    passport.authenticate("github", { failureRedirect: "/" }),
+    (req, res) => {
+        return res.redirect(
+            `http://localhost:4000/options/repositories`
         );
     }
 );

@@ -25,11 +25,6 @@ const UserSchema = new mongoose.Schema({
             type : String
         }
     ],
-    phoneNumber : [
-        {
-            type : Number
-        }
-    ],
     profilePic : [
         {
             type : String
@@ -52,7 +47,8 @@ UserSchema.methods.generateAuthToken = function(){
 
 // Find Email in Db
 UserSchema.statics.findByEmail = async (email) => {
-    const user = await UserModal.findOne({ email });
+    const user = await UserModel.findOne({ email });
+    console.log(user);
     if (!user) throw new Error("Email doesn't exist.");
     return user;
   };
@@ -76,16 +72,6 @@ UserSchema.statics.findByEmailAndPassword = async ({email,password})=>{
 };
 
 
-
-// find user email and phoneNumber
-UserSchema.statics.findByEmailAndPhone = async ({email, phoneNumber})=>{
-    const checkUserByEmail = await UserModel.findOne({email});
-    const checkUserByPhone = await UserModel.findOne({phoneNumber});
-    if(checkUserByEmail || checkUserByPhone){
-        throw new Error("User already exits....");
-    }
-    return false;
-}
 
 
 // pre method in db save data

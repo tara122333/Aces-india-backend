@@ -16,7 +16,7 @@ Access     ==> public
 Router.post("/selected/:_id", async (req, res) => {
     try {
         const { _id } = req.params;
-        const { option, hosting, hostingOptions } = req.body;
+        const { option, hosting, hostingOptions, intro, steps } = req.body;
         console.log(option);
         const userData = await UserModel.findOne({ _id });
         if (userData) {
@@ -29,7 +29,9 @@ Router.post("/selected/:_id", async (req, res) => {
                     user: _id,
                     option: option,
                     hosting: hosting,
-                    hostingOptions: hostingOptions
+                    hostingOptions: hostingOptions,
+                    intro: intro,
+                    steps: steps
                 });
                 if (selectedOptions) {
                     return res.status(200).json({ message: "success", selectedOptions });
@@ -38,7 +40,30 @@ Router.post("/selected/:_id", async (req, res) => {
             }
         }
         return res.status(201).json({
-            message: "user already selected options", status: "success"
+            message: "user already not exist", status: "success"
+        });
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+
+
+/*
+route      ==> /signup
+method     ==> POST
+Des        ==> signUp with email and password
+params     ==> none
+Access     ==> public
+*/
+Router.get("/selected/data/:_id", async (req, res) => {
+    try {
+        const { _id } = req.params;
+        const selectedOptionsData = await OptionsModel.findOne({ user: _id });
+        if (selectedOptionsData) {
+            return res.status(200).json({ message: "user already selected options", selectedOptionsData });
+        }
+        return res.status(201).json({
+            message: "user already not exist", status: "success"
         });
     } catch (error) {
         return res.status(500).json({ error: error.message });
@@ -53,18 +78,30 @@ function ensureAuthenticated(req, res, next) {
     res.redirect('/');
 }
 
-Router.get('/repositories', ensureAuthenticated, async(req, res) => {
+Router.get('/repositories', ensureAuthenticated, async (req, res) => {
     console.log("token");
     console.log(req.session.passport.user.accessToken);
     try {
         const response = await axios.get('https://api.github.com/user/repos', { headers: { Authorization: `Bearer ${req.session.passport.user.accessToken}` } });
         const repositories = response.data;
-            console.log("repositories");
-            console.log(repositories);
-            res.status(200).json({repositories});
+        res.status(200).json({ repositories });
     } catch (error) {
         return res.status(500).json({ error: error.message });
-        
+
+    }
+});
+
+Router.get('/:_id', async (req, res) => {
+    const { _id } = req.params;
+    try {
+        const data = await UserModel.findOne({ _id });
+        if (!data) {
+            return res.status(201).json({ message: "not found" });
+        }
+        return res.status(200).json({ data });
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+
     }
 });
 

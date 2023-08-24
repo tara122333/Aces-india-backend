@@ -8,9 +8,15 @@ const OptionsSchema = new mongoose.Schema({
         ref: 'Users',
         required: true
     },
+    steps : {
+        type : Number,
+    },
     option:
     {
         type: String
+    },
+    intro: {
+        type : String,
     },
     hosting:
     {
