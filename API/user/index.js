@@ -47,14 +47,6 @@ Router.post("/selected/:_id", async (req, res) => {
     }
 });
 
-
-/*
-route      ==> /signup
-method     ==> POST
-Des        ==> signUp with email and password
-params     ==> none
-Access     ==> public
-*/
 Router.get("/selected/data/:_id", async (req, res) => {
     try {
         const { _id } = req.params;
@@ -79,8 +71,6 @@ function ensureAuthenticated(req, res, next) {
 }
 
 Router.get('/repositories', ensureAuthenticated, async (req, res) => {
-    console.log("token");
-    console.log(req.session.passport.user.accessToken);
     try {
         const response = await axios.get('https://api.github.com/user/repos', { headers: { Authorization: `Bearer ${req.session.passport.user.accessToken}` } });
         const repositories = response.data;

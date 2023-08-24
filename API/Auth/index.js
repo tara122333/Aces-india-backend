@@ -7,23 +7,10 @@ import passport from "passport";
 const Router = express.Router();
 
 
-// validation config
-// import {ValidSignup,ValidSignin} from '../../validation/auth';
-
-
-
-/*
-route      ==> /signup
-method     ==> POST
-Des        ==> signUp with email and password
-params     ==> none
-Access     ==> public
-*/
 Router.post("/signup", async (req, res) => {
     try {
         // await ValidSignup(req.body.credentials);
         console.log(req.body.credentials);
-        // await UserModel.findByEmail(req.body.credentials);
         const findByEmail = await UserModel.findOne({ email: req.body.credentials.email });
         if (!findByEmail) {
             const newUser = await UserModel.create(req.body.credentials);
@@ -106,9 +93,6 @@ Router.get(
     "/google/callback",
     passport.authenticate("google", { failureRedirect: "/" }),
     (req, res) => {
-        // Successful authentication, redirect home.
-        // console.log("req.session.passport");
-        // console.log(req.session.passport);
         return res.redirect(
             `https://delightful-mermaid-12b15b.netlify.app/google/${req.session.passport.user.user._id}`
         );
@@ -162,7 +146,7 @@ Router.get(
     passport.authenticate("github", { failureRedirect: "/" }),
     (req, res) => {
         return res.redirect(
-            `http://localhost:4000/options/repositories`
+            `https://xerocodeeassignment.onrender.com/options/repositories`
         );
     }
 );
