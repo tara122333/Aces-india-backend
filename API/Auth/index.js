@@ -56,7 +56,7 @@ Router.get(
     passport.authenticate("google", { failureRedirect: "/" }),
     (req, res) => {
         return res.redirect(
-            `https://delightful-mermaid-12b15b.netlify.app/google/${req.session.passport.user.user._id}`
+            `https://client-three-hazel.vercel.app/google/${req.session.passport.user.user._id}`
         );
     }
 );
@@ -74,7 +74,7 @@ Router.get(
     passport.authenticate("github", { failureRedirect: "/" }),
     (req, res) => {
         return res.redirect(
-            `https://delightful-mermaid-12b15b.netlify.app/github/${req.session.passport.user.user._id}`
+            `https://client-three-hazel.vercel.app/github/${req.session.passport.user.user._id}`
         );
     }
 );
