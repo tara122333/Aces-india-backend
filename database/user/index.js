@@ -30,6 +30,9 @@ const UserSchema = new mongoose.Schema({
             type : String
         }
     ],
+    accessToken : {
+        type : String
+    }
 },{timestamps:true});
 
 

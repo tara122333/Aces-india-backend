@@ -10,7 +10,7 @@ export default (passport) => {
         new GithubStrategy({
             clientID: process.env.GITHUB_CLIENT_ID,
             clientSecret: process.env.GITHUB_CLIENT_SECRET,
-            callbackURL: `https://xerocodeeassignment.onrender.com/auth/github/callback`
+            callbackURL: `http://localhost:4000/auth/github/callback`
         },
             async (accessToken, refreshToken, profile, done) => {
                 const newUser = {
@@ -18,17 +18,28 @@ export default (passport) => {
                     email: profile.username,
                     profilePic: profile.photos[0].value,
                     verified: true,
+                    accessToken :accessToken
                 };
                 try {
                     const user = await UserModel.findOne({ email: newUser.email });
                     if (user) {
+                        const user = await UserModel.findOneAndUpdate(
+                            {
+                                email:newUser.email
+                            },
+                            {
+                                $set : newUser
+                            },
+                            {
+                                new : true
+                            });
                         const token = user.generateAuthToken();
-                        done(null, { user, token, accessToken, refreshToken });
+                        done(null, { user, accessToken, token,refreshToken });
                     } else {
 
                         const user = await UserModel.create(newUser);
                         const token = user.generateAuthToken();
-                        done(null, { user, token,accessToken, refreshToken });
+                        done(null, { user,token,accessToken, refreshToken });
                     }
                 } catch (error) {
                     done(error, null); 

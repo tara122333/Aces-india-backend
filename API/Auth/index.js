@@ -74,25 +74,10 @@ Router.get(
     passport.authenticate("github", { failureRedirect: "/" }),
     (req, res) => {
         return res.redirect(
-            `https://client-three-hazel.vercel.app/github/${req.session.passport.user.user._id}`
+            `http://localhost:3000/github/${req.session.passport.user.user._id}`
         );
     }
 );
 
-// Router.get("/github/repo",
-//     passport.authenticate("github", {
-//         scope: ['']
-//     }
-//     ));
-
-// Router.get(
-//     "/github/repo",
-//     passport.authenticate("github", { failureRedirect: "/" }),
-//     (req, res) => {
-//         return res.redirect(
-//             `https://xerocodeeassignment.onrender.com/options/repositories`
-//         );
-//     }
-// );
 
 export default Router;

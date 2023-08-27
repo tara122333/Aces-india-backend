@@ -55,21 +55,18 @@ Router.get("/selected/data/:_id", async (req, res) => {
 });
 
 
-function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect('/');
-}
-
-Router.get('/repositories', ensureAuthenticated, async (req, res) => {
+Router.get('/repositories/:githubId', async (req, res) => {
     try {
-        const response = await axios.get('https://api.github.com/user/repos', { headers: { Authorization: `Bearer ${req.session.passport.user.accessToken}` } });
-        const repositories = response.data;
-        res.status(200).json({ repositories });
+        const { githubId } = req.params;
+        const findAccessToken = await UserModel.findOne({ _id : githubId });
+        if (findAccessToken) {
+            const response = await axios.get('https://api.github.com/user/repos', { headers: { Authorization: `Bearer ${findAccessToken.accessToken}` } });
+            const repositories = response.data;
+            return res.status(200).json({ repositories });
+        }
+        return res.status(201).json({ message : "user not authenticate" });
     } catch (error) {
         return res.status(500).json({ error: error.message });
-
     }
 });
 

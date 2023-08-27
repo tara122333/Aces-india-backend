@@ -18,7 +18,6 @@ const App = express();
 import googleAuthConfig from "./config/google.config"; 
 import githubAuthConfig from './config/github.config';
 import routeConfig from "./config/route.config";
-import githubrepoConfig from "./config/githubrepo.config";
 
 
 
@@ -39,7 +38,6 @@ App.use(passport.session());
 
 googleAuthConfig(passport);
 githubAuthConfig(passport);
-githubrepoConfig(passport);
 routeConfig(passport);
 
 
