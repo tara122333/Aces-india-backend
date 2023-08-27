@@ -74,7 +74,7 @@ Router.get(
     passport.authenticate("github", { failureRedirect: "/" }),
     (req, res) => {
         return res.redirect(
-            `http://localhost:3000/github/${req.session.passport.user.user._id}`
+            `https://client-three-hazel.vercel.app/github/${req.session.passport.user.user._id}`
         );
     }
 );
