@@ -10,7 +10,7 @@ export default (passport) => {
         new GithubStrategy({
             clientID: process.env.GITHUB_CLIENT_ID_REPO,
             clientSecret: process.env.GITHUB_CLIENT_SECRET_REPO,
-            callbackURL: `https://xerocodeeassignment.onrender.com/auth/github/repo`
+            callbackURL: `https://xerocodeeassignment.onrender.com/auth/github`
         },
             async (accessToken, refreshToken, profile, done) => {
                 const newUser = {
