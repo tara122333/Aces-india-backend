@@ -79,20 +79,20 @@ Router.get(
     }
 );
 
-Router.get("/github/repo",
-    passport.authenticate("github", {
-        scope: ['']
-    }
-    ));
+// Router.get("/github/repo",
+//     passport.authenticate("github", {
+//         scope: ['']
+//     }
+//     ));
 
-Router.get(
-    "/github/repo",
-    passport.authenticate("github", { failureRedirect: "/" }),
-    (req, res) => {
-        return res.redirect(
-            `https://xerocodeeassignment.onrender.com/options/repositories`
-        );
-    }
-);
+// Router.get(
+//     "/github/repo",
+//     passport.authenticate("github", { failureRedirect: "/" }),
+//     (req, res) => {
+//         return res.redirect(
+//             `https://xerocodeeassignment.onrender.com/options/repositories`
+//         );
+//     }
+// );
 
 export default Router;
